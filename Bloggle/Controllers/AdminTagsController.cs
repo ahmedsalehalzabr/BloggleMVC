@@ -30,7 +30,14 @@ namespace Bloggle.Controllers
             };
          await appDbContext.Tags.AddAsync(tag);
          await appDbContext.SaveChangesAsync();
-            return View("Add");
+            return RedirectToAction("List");
+        }
+
+        [HttpGet]
+        public IActionResult List()
+        {
+          var tags = appDbContext.Tags.ToList();
+            return View(tags);
         }
     }
 }
