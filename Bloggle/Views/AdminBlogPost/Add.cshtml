@@ -21,7 +21,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Content</label>
-            <textarea class="form-control" id="Content" asp-for="Content" > </textarea>
+            <textarea class="form-control" id="content" asp-for="Content"> </textarea>
         </div>
         <div class="mb-3">
             <label class="form-label">Short Description</label>
@@ -31,6 +31,7 @@
             <label class="form-label">FeaturedImageUrl</label>
             <input type="text" class="form-control" id="FeaturedImageUrl" asp-for="FeaturedImageUrl" />
         </div>
+
         <div class="mb-3">
             <label class="form-label">UrlHandle</label>
             <input type="text" class="form-control" id="UrlHandle" asp-for="UrlHandle" />
@@ -61,3 +62,10 @@
         </div>
     </form>
 </div>
+
+
+            @section Scripts {
+                <script>
+                    var editor = new FroalaEditor('#content')
+                </script>
+            }
