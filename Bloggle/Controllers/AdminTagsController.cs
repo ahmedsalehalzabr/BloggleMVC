@@ -1,6 +1,7 @@
 ﻿using Bloggle.Data;
 using Bloggle.Models.Domain;
 using Bloggle.Models.ViewModels;
+using Bloggle.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,11 +9,12 @@ namespace Bloggle.Controllers
 {
     public class AdminTagsController : Controller
     {
-        private readonly AppDbContext appDbContext;
+       
+        private readonly ITagRepository tagRepository;
 
-        public AdminTagsController(AppDbContext appDbContext)
+        public AdminTagsController(ITagRepository tagRepository)
         {
-            this.appDbContext = appDbContext;
+            this.tagRepository = tagRepository;
         }
 
         [HttpGet]
@@ -29,15 +31,16 @@ namespace Bloggle.Controllers
                 Name = addTagRequest.Name,
                 DisplayName = addTagRequest.DisplayName,
             };
-         await appDbContext.Tags.AddAsync(tag);
-         await appDbContext.SaveChangesAsync();
+
+            await tagRepository.AddAsync(tag);
+        
             return RedirectToAction("List");
         }
 
         [HttpGet]
         public async Task<IActionResult> List()
         {
-          var tags = await appDbContext.Tags.ToListAsync();
+          var tags = await tagRepository.GetAllAsync();
             return View(tags);
         }
 
@@ -46,7 +49,7 @@ namespace Bloggle.Controllers
         public async Task<IActionResult> Edit(Guid id)
         {
           //  var tag = appDbContext.Tags.Find(id);
-            var tag = await appDbContext.Tags.FirstOrDefaultAsync( t => t.Id == id);
+            var tag = await tagRepository.GetAsync(id);
 
             if (tag != null)
             {
@@ -62,6 +65,8 @@ namespace Bloggle.Controllers
 
             return View(null);
         }
+
+
         [HttpPost]
         public async Task<IActionResult> Edit(EditTagRequest editTagRequest)
         {
@@ -73,17 +78,16 @@ namespace Bloggle.Controllers
 
             };
 
-            var exitingTag = await appDbContext.Tags.FindAsync(tag.Id);
+            var updateTag = await tagRepository.UpdateAsync(tag);
 
-            if (exitingTag != null)
+            if (updateTag != null)
             {
-                exitingTag.Name = tag.Name;
-                exitingTag.DisplayName = tag.DisplayName;
-                await appDbContext.SaveChangesAsync();
-
                 return RedirectToAction("List");
             }
+            else
+            {
 
+            }
             return RedirectToAction("Edit", new  { id = editTagRequest.Id });
 
         }
@@ -91,13 +95,10 @@ namespace Bloggle.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(EditTagRequest editTagRequest)
         {
-            var tag = await appDbContext.Tags.FindAsync(editTagRequest.Id);
-
-            if(tag != null)
+            var delete = await tagRepository.DeleteAsync(editTagRequest.Id);
+            if (delete != null)
             {
-                appDbContext.Tags.Remove(tag);
-               await appDbContext.SaveChangesAsync();
-                // Show a success notification
+                // Show success notification
                 return RedirectToAction("List");
             }
 
