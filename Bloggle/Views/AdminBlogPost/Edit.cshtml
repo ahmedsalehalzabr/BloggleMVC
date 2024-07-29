@@ -1,0 +1,74 @@
+﻿@model Bloggle.Models.ViewModels.EditBlogPostRequest
+@{
+}
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1>Edit BlogPost - Admin Functionality</h1>
+    </div>
+</div> 
+
+<div class="container py-5">
+    @if (Model != null)
+    {
+       <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Id</label>
+                <input type="text" class="form-control" id="id" asp-for="Id" readonly />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Heading</label>
+                <input type="text" class="form-control" id="Heading" asp-for="Heading" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Page Title</label>
+                <input type="text" class="form-control" id="PageTitle" asp-for="PageTitle" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Content</label>
+                <textarea class="form-control" id="Content" asp-for="Content"> </textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Short Description</label>
+                <input type="text" class="form-control" id="ShortDescription" asp-for="ShortDescription" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">FeaturedImageUrl</label>
+                <input type="text" class="form-control" id="FeaturedImageUrl" asp-for="FeaturedImageUrl" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">UrlHandle</label>
+                <input type="text" class="form-control" id="UrlHandle" asp-for="UrlHandle" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">PublishedDate</label>
+                <input type="date" class="form-control" id="PublishedDate" asp-for="PublishedDate" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Author</label>
+                <input type="text" class="form-control" id="Author" asp-for="Author" />
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="Visible" asp-for="Visible">
+                <label class="form-check-label">
+                    Is Visible?
+                </label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Tags</label>
+                <select class="form-select"
+                        asp-items="@Model.Tags"
+                        asp-for="SelectedTag"></select>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-dark">Update</button>
+            </div>
+       </form>
+    }
+    else
+    {
+        <p>No blog post found!</p>
+    }
+
+</div>

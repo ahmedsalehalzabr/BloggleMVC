@@ -7,7 +7,7 @@ namespace Bloggle.Repository
         Task<IEnumerable<BlogPost>> GetAllPostsAsync();
         Task<BlogPost> GetByIdAsync(Guid id);
         Task<BlogPost> AddAsync(BlogPost blogPost);
-        Task<BlogPost> UpdateAsync(BlogPost blogPost);
-        Task<BlogPost> DeleteAsync(Guid id);
+        Task<BlogPost?> UpdateAsync(BlogPost blogPost);
+        Task<BlogPost?> DeleteAsync(Guid id);
     }
 }

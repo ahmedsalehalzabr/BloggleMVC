@@ -30,14 +30,33 @@ namespace Bloggle.Repository
             return await appDbContext.BlogPosts.Include(x => x.Tags).ToListAsync();
         }
 
-        public Task<BlogPost> GetByIdAsync(Guid id)
+        public async Task<BlogPost> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await appDbContext.BlogPosts.Include(x => x.Tags).FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task<BlogPost> UpdateAsync(BlogPost blogPost)
+        public async Task<BlogPost> UpdateAsync(BlogPost blogPost)
         {
-            throw new NotImplementedException();
+            var existingBlog = await appDbContext.BlogPosts.Include(x => x.Tags)
+                .FirstOrDefaultAsync(x => x.Id == blogPost.Id);
+            if (existingBlog != null)
+            {
+                existingBlog.Id = blogPost.Id;
+                existingBlog.Heading = blogPost.Heading;
+                existingBlog.Author = blogPost.Author;
+                existingBlog.ShortDescription = blogPost.ShortDescription;
+                existingBlog.Content = blogPost.Content;
+                existingBlog.PublishedDate = blogPost.PublishedDate;
+                existingBlog.Visible = blogPost.Visible;
+                existingBlog.PageTitle = blogPost.PageTitle;
+                existingBlog.FeaturedImageUrl = blogPost.FeaturedImageUrl;
+                existingBlog.UrlHandle = blogPost.UrlHandle;
+                existingBlog.Tags = blogPost.Tags;
+
+                await appDbContext.SaveChangesAsync();
+                return existingBlog;
+            }
+            return null;
         }
     }
 }
