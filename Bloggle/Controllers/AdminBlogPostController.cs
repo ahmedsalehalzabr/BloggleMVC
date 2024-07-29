@@ -61,7 +61,7 @@ namespace Bloggle.Controllers
             blogPost.Tags = selectTags;
 
             await blogPostRepository.AddAsync(blogPost);
-            return RedirectToAction("Add");
+            return RedirectToAction("List");
         }
 
         [HttpGet]
@@ -147,6 +147,20 @@ namespace Bloggle.Controllers
             }
 
             return RedirectToAction("Edit");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(EditBlogPostRequest editBlogPostRequest)
+        {
+            var blogPost = await blogPostRepository.DeleteAsync(editBlogPostRequest.Id);
+            if (blogPost != null)
+            {
+                return RedirectToAction("List");
+            }
+
+            return RedirectToAction("Edit", new {id = editBlogPostRequest.Id});
+                
+          
         }
     }
 }

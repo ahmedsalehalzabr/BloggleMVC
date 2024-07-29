@@ -20,9 +20,17 @@ namespace Bloggle.Repository
             return blogPost;
         }
 
-        public Task<BlogPost> DeleteAsync(Guid id)
+        public async Task<BlogPost> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var blogPost = await appDbContext.BlogPosts.FindAsync(id);
+
+            if (blogPost != null)
+            {
+                appDbContext.BlogPosts.Remove(blogPost);
+                await appDbContext.SaveChangesAsync(); 
+                return blogPost;
+            }
+            return null;
         }
 
         public async Task<IEnumerable<BlogPost>> GetAllPostsAsync()
