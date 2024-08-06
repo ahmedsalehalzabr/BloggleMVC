@@ -67,7 +67,7 @@ namespace Bloggle.Controllers
         [HttpGet]
         public async Task<IActionResult> List()
         {
-            var blogPosts = await blogPostRepository.GetAllPostsAsync();
+            var blogPosts = await blogPostRepository.GetAllAsync();
 
             return View(blogPosts);
         }

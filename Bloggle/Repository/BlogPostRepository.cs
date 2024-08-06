@@ -33,7 +33,7 @@ namespace Bloggle.Repository
             return null;
         }
 
-        public async Task<IEnumerable<BlogPost>> GetAllPostsAsync()
+        public async Task<IEnumerable<BlogPost>> GetAllAsync()
         {
             return await appDbContext.BlogPosts.Include(x => x.Tags).ToListAsync();
         }
