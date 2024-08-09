@@ -1,5 +1,7 @@
 ﻿using Bloggle.Data;
 using Bloggle.Models.Domain;
+using Bloggle.Models.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bloggle.Repository
@@ -7,11 +9,47 @@ namespace Bloggle.Repository
     public class BlogPostRepository : IBlogPostRepository
     {
         private readonly AppDbContext appDbContext;
-
-        public BlogPostRepository(AppDbContext appDbContext)
+         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly string _imagesPath;
+        public BlogPostRepository(AppDbContext appDbContext, 
+            IWebHostEnvironment webHostEnvironment)
         {
             this.appDbContext = appDbContext;
+            _webHostEnvironment = webHostEnvironment;
+            _imagesPath = $"{_webHostEnvironment.WebRootPath}/assets/images";
         }
+       
+        //public async Task Create(AddBlogPostRequest model)
+        //{
+        //    var featurImage = $"{Guid.NewGuid()}{Path.GetExtension(model.FeaturedImageUrl.FileName)}";
+        //    var path = Path.Combine(_imagesPath, featurImage);
+
+        //    using var stream = File.Create(path);
+        //    await model.FeaturedImageUrl.CopyToAsync(stream);
+        //    stream.Dispose();
+
+        //    BlogPost blogPost = new()
+        //    {
+        //        Author = model.Author,
+        //        FeaturedImageUrl = featurImage,
+        //        Content = model.Content,
+        //        ShortDescription = model.ShortDescription,
+        //        Heading = model.Heading,
+        //        PageTitle = model.PageTitle,
+        //        PublishedDate = model.PublishedDate,
+        //        UrlHandle = model.UrlHandle,
+        //        Visible = model.Visible,
+
+        //    };
+        //    appDbContext.Add(blogPost);
+        //    appDbContext.SaveChanges();
+
+        //}
+
+
+
+
+
 
         public async Task<BlogPost> AddAsync(BlogPost blogPost)
         {
@@ -19,6 +57,8 @@ namespace Bloggle.Repository
             await appDbContext.SaveChangesAsync();
             return blogPost;
         }
+
+     
 
         public async Task<BlogPost> DeleteAsync(Guid id)
         {
